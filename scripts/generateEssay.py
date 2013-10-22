@@ -7,11 +7,15 @@ GENERATOR_OFFSET = 10**6
 generators = {1: pg.PostmodernGenerator(), 2: pg.MathGen() }
 essays = {}
 generatedEssays = {}
+header = []
+DATA_PATH = '../data/'
 
 def importEssays(fname='../data/training_set_rel3.csv', delim='|', prompt_id=None):
     """ fname: file name, delim: delimiter, prompt_id: integer id of prompt """
     global essays
+    global header
     essays = {}
+    header = []
     with open(fname, 'r') as csvfile:
         reader = csv.reader(csvfile, delimiter=delim)
         header = reader.next()
@@ -28,12 +32,19 @@ def importEssays(fname='../data/training_set_rel3.csv', delim='|', prompt_id=Non
 
     print len(essays), 'essays loaded'
 
-DATA_PATH = '../data/'
+def saveEssaysAsCsv(fname='training.csv'):
+    with open(DATA_PATH+fname, 'w') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(header)
+        for ess_id in sorted(essays):
+            ess = essays[ess_id]
+            writer.writerow([ess.essay_id, ess.prompt_id, ess.text] + [ess.getScore(header[i]) for i in range(3, len(header))])
+
 def dumpEssays(fname='essays.pickle'):
-    pickle.dump((essays, generatedEssays), open('DATA_PATH+fname', 'w'))
+    pickle.dump((essays, generatedEssays), open(DATA_PATH+fname, 'w'))
 
 def recoverEssays(fname='essays.pickle'):
-    essays, generatedEssays = pickle.load(open('DATA_PATH+fname', 'r'))
+    essays, generatedEssays = pickle.load(open(DATA_PATH+fname, 'r'))
 
 def interleave1(essayText, generator):
     generator.generateEssay()
