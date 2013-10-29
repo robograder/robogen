@@ -44,6 +44,7 @@ def dumpEssays(fname='essays.pickle'):
     pickle.dump((essays, generatedEssays), open(DATA_PATH+fname, 'w'))
 
 def recoverEssays(fname='essays.pickle'):
+    global essays, generatedEssays
     essays, generatedEssays = pickle.load(open(DATA_PATH+fname, 'r'))
 
 def interleave1(essayText, generator):
@@ -51,17 +52,17 @@ def interleave1(essayText, generator):
     # interleave and flatten
     return ' '.join([a for pair in zip(pg.splitSentences(essayText), generator) for a in pair])
     
-def interleave1All(generator_id):
+def interleave1All(generatorId, scoreRange):
     global generatedEssays, essays
     generatedEssays = {}
-    generator = generators[generator_id]
+    generator = generators[generatorId]
     count = 0
     for i in essays:
-        if essays[i].getScore('domain1_score') == 4:
+        if essays[i].getScore('domain1_score') in scoreRange:
             if count % 10 == 0:
                 print count
             count += 1
-            generatedEssays[i] = ess.GeneratedEssay(generator_id*GENERATOR_OFFSET + i, essays[i].prompt_id, interleave1(essays[i].text, generator), i, generator_id)
+            generatedEssays[i] = ess.GeneratedEssay(generatorId*GENERATOR_OFFSET + i, essays[i].prompt_id, interleave1(essays[i].text, generator), i, generatorId)
 
 def rpp2():
     runPostmodernPrompt2()

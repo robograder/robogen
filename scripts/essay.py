@@ -10,6 +10,9 @@ class Essay:
     
     def getScore(self, key):
         return self.scores[key] if key in self.scores else None
+
+    def getText(self):
+        return ' '.join(self.text)
     
     def __hash__(self):
         return essay_id
