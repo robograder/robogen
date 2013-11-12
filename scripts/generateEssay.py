@@ -32,13 +32,30 @@ def importEssays(fname='../data/training_set_rel3.csv', delim='|', prompt_id=Non
 
     print len(essays), 'essays loaded'
 
-def saveEssaysAsCsv(fname='training.csv'):
+def saveEssaysAsCsv(essays, fname='training.csv'):
+    ''' takes in essays, a dict from ids to Essay objects, and an output filename; writes those essays to a file '''
     with open(DATA_PATH+fname, 'w') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(header)
         for ess_id in sorted(essays):
             ess = essays[ess_id]
-            writer.writerow([ess.essay_id, ess.prompt_id, ess.text] + [ess.getScore(header[i]) for i in range(3, len(header))])
+            writer.writerow([ess.essay_id, ess.prompt_id, ess.getText()] + [ess.getScore(header[i]) for i in range(3, len(header))])
+
+def saveLightsideTrainingAnswers(essays, fname, scoreType='domain1_score'):
+    with open(DATA_PATH+fname, 'w') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['label', 'text'])
+        for ess_id in sorted(essays):
+            ess = essays[ess_id]
+            writer.writerow([ess.getScore(scoreType), ess.getText()])
+
+def saveLightsideGeneratedAnswers(essays, fname, author):
+    with open(DATA_PATH+fname, 'w') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['text', 'author'])
+        for ess_id in sorted(essays):
+            ess = essays[ess_id]
+            writer.writerow([ess.text, author])
 
 def dumpEssays(fname='essays.pickle'):
     pickle.dump((essays, generatedEssays), open(DATA_PATH+fname, 'w'))
@@ -71,6 +88,6 @@ def runPostmodernPrompt2():
     print 'Importing prompt_id = 2 essays...'
     importEssays(prompt_id=2)
     print 'Interleaving with generator 1...'
-    interleave1All(1)
+    interleave1All(1, set([1,2,3,4,5,6]))
     print 'Dumping essays and generated essays to file...'
     dumpEssays()

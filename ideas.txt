@@ -1,0 +1,11 @@
+(1) intro
+(2) historical
+(3) literary
+(4) personal
+(5) copy intro, replace with synonyms, add "in conclusion"
+
+include "key word" reasonably often (once every two paragraphs?)
+avoid passive voice
+variety of sentence lengths, mostly pretty long
+
+

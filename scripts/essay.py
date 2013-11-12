@@ -13,6 +13,9 @@ class Essay:
 
     def getText(self):
         return ' '.join(self.text)
+
+    def toDict(self):
+        return { 'essay_id': self.essay_id, 'prompt_id': self.prompt_id, 'text': self.getText(), 'scores': self.scores }
     
     def __hash__(self):
         return essay_id
@@ -25,4 +28,10 @@ class GeneratedEssay(Essay):
         self.scores = {}
         self.parent_id = parent_id
         self.generator_id = generator_id
+
+    def toDict(self):
+        d = super(GeneratedEssay, self).toDict()
+        d['parent_id'] = self.parent_id
+        d['generator_id'] = self.generator_id
+        return d
 
