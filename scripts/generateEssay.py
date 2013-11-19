@@ -55,7 +55,7 @@ def saveLightsideGeneratedAnswers(essays, fname, author):
         writer.writerow(['text', 'author'])
         for ess_id in sorted(essays):
             ess = essays[ess_id]
-            writer.writerow([ess.text, author])
+            writer.writerow([ess.getText(), author])
 
 def dumpEssays(fname='essays.pickle'):
     pickle.dump((essays, generatedEssays), open(DATA_PATH+fname, 'w'))

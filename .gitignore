@@ -2,6 +2,7 @@
 *.xls
 *.xlsx
 *.swp
+*.pyc
 data/
 proposal/
 dada-engine/
