@@ -81,7 +81,9 @@ def importwordsdb(fname = 'wordlist.csv', table = 'words'):
         # simple word wrapper class
         SimpleWord = namedtuple('SimpleWord', ['word'] + [get_col_name(col) for col in header[1:]])
 
-        c.execute('''create table if not exists {} (word varchar(25), partofspeech varchar(15), transitive boolean, countable boolean, hedge boolean, judgmental integer);'''.format(
+        c.execute('''drop table {}'''.format(table))
+        # ... if not exists [ no longer needed ]
+        c.execute('''create table {} (word varchar(25), partofspeech varchar(15), transitive boolean, countable boolean, hedge boolean, judgmental integer);'''.format(
             table) )
 
         print c.execute('pragma table_info({});'.format(table)).fetchall()
@@ -101,7 +103,7 @@ def importwordsdb(fname = 'wordlist.csv', table = 'words'):
                 dbrowdict['partofspeech'] = NOUN
             elif wordinfo.adjective:
                 dbrowdict['partofspeech'] = ADJ
-            elif wordinfo.noun:
+            elif wordinfo.adverb:
                 dbrowdict['partofspeech'] = ADV
             elif wordinfo.connective:
                 dbrowdict['partofspeech'] = CONNECTIVE

@@ -50,7 +50,7 @@ def find_words(db):
     elif partofspeech == wi.ADV:
         result = db.execute('''select word from words where partofspeech="adverb" and hedge=? and judgmental=?;''', (hedge, judgmental)).fetchall()
     elif partofspeech == wi.CONNECTIVE:
-        result = db.execute('''select word from words where partofspeech="connective" and judgmental=?;''', (judgmental,)).fetchall()
+        result = db.execute('''select word from words where partofspeech="connective";''', (judgmental,)).fetchall()
     else:
         return
         #raise ValueError('Bad part of speech!')
