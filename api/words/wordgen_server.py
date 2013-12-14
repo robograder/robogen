@@ -19,14 +19,17 @@ def request_words():
 
 @app.post('/words')
 def find_words_html(db):
-    wordlist=find_words(db)
-    return template('wordresult', wordlist=wordlist)
+    return template('wordresult', wordlist=find_words(db))
 
 @app.post('/words.json')
 def find_words_json(db):
     response.content_type = 'application/json'
-    wordlist=find_words(db)
-    return {'words': [wi.get_raw_word(str(i[0])) for i in wordlist]}
+    return {'words': find_words(db)}
+
+@app.post('/words_dada.json')
+def find_words_dada_json(db):
+    response.content_type = 'application/json'
+    return {'words': find_words(db)}
 
 def find_words(db):
     partofspeech = request.forms.get('partofspeech')
@@ -52,7 +55,7 @@ def find_words(db):
         return
         #raise ValueError('Bad part of speech!')
 
-    print result
+    result = [wi.get_raw_word(str(i[0])) for i in wordlist]
     return random.sample(result, min(len(result), int(count)))
 
 
