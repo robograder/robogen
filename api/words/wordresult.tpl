@@ -9,7 +9,7 @@
 </head>
 <body>
 % for w in wordlist:
-    <div> {{w[0]}} </div>
+    <div> {{w}} </div>
 % end
 </body>
 </html>

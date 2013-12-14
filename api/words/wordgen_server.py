@@ -46,18 +46,18 @@ def find_words(db):
     elif partofspeech == wi.NOUN:
         result = db.execute('''select word from words where partofspeech="noun" and countable=? and judgmental=?;''', (countable,judgmental)).fetchall()
     elif partofspeech == wi.ADJ:
-        result = db.execute('''select word from words where partofspeech="adjective" and judgmental=?;''', (judgmental)).fetchall()
+        result = db.execute('''select word from words where partofspeech="adjective" and judgmental=?;''', (judgmental,)).fetchall()
     elif partofspeech == wi.ADV:
         result = db.execute('''select word from words where partofspeech="adverb" and hedge=? and judgmental=?;''', (hedge, judgmental)).fetchall()
     elif partofspeech == wi.CONNECTIVE:
-        result = db.execute('''select word from words where partofspeech="connective" and judgmental=?;''', (judgmental)).fetchall()
+        result = db.execute('''select word from words where partofspeech="connective" and judgmental=?;''', (judgmental,)).fetchall()
     else:
         return
         #raise ValueError('Bad part of speech!')
 
-    result = [wi.get_raw_word(str(i[0])) for i in wordlist]
+    result = [wi.get_raw_word(str(i[0])) for i in result]
     return random.sample(result, min(len(result), int(count)))
 
 
 if __name__ == '__main__':
-    app.run(port=3000)
+    app.run(host='0.0.0.0', port=8080, debug=True)
