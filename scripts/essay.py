@@ -12,7 +12,12 @@ class Essay:
         return self.scores[key] if key in self.scores else None
 
     def getText(self):
-        return ' '.join(self.text)
+        if isinstance(self.text, list):
+            return ' '.join(self.text)
+        elif isinstance(self.text, str):
+            return self.text
+        else:
+            return None
 
     def toDict(self):
         return { 'essay_id': self.essay_id, 'prompt_id': self.prompt_id, 'text': self.getText(), 'scores': self.scores }
